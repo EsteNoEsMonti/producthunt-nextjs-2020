@@ -1,13 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../components/layout/Layout';
+import { useRouter } from 'next/router';
 import DetallesProducto from '../components/layout/DetallesProducto'; 
 import useProductos from '../hooks/useProductos';
 
-const Home = () => {
-  
-  const { productos } = useProductos('creado');
+const Buscar = () => {
 
-  return (
+  const router = useRouter();
+  // console.log(router);
+  const { query: {q} } = router;
+  console.log(q);
+
+  //Todos los productos
+  const { productos } = useProductos('creado');
+  //state
+  const [ resultado, guardarResultado ] = useState([]);
+
+  useEffect(() => {
+    const busqueda = q.toLowerCase();
+    const filtro = productos.filter(producto => {
+      return (
+        producto.nombre.toLowerCase().includes(busqueda) ||
+        producto.descripcion.toLowerCase().includes(busqueda)
+      )
+    });
+    guardarResultado(filtro);
+    
+  }, [ q, productos ]);
+  
+
+  
+  return(
     <div>
       <Layout>
         <div className="listado-productos">
@@ -15,7 +38,7 @@ const Home = () => {
             <ul className="bg-white">
               {/* iterar en cada producto: */}
               {
-                productos.map(producto => {
+                resultado.map(producto => {
                   return (
                     <DetallesProducto
                       key={producto.id}
@@ -25,16 +48,12 @@ const Home = () => {
                   );
                 })
               }
-
             </ul>
-
           </div>
-
         </div>
-
       </Layout>
     </div>
   );
 }
 
-export default Home
+export default Buscar

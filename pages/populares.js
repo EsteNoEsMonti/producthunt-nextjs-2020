@@ -1,11 +1,11 @@
 import React from 'react';
 import Layout from '../components/layout/Layout';
-import DetallesProducto from '../components/layout/DetallesProducto'; 
+import DetallesProducto from '../components/layout/DetallesProducto';
 import useProductos from '../hooks/useProductos';
 
-const Home = () => {
-  
-  const { productos } = useProductos('creado');
+const Populares = () => {
+
+  const { productos } = useProductos('votos');
 
   return (
     <div>
@@ -25,11 +25,8 @@ const Home = () => {
                   );
                 })
               }
-
             </ul>
-
           </div>
-
         </div>
 
       </Layout>
@@ -37,4 +34,4 @@ const Home = () => {
   );
 }
 
-export default Home
+export default Populares
